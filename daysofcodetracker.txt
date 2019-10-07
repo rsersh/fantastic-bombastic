@@ -1,0 +1,22 @@
+Date, Minutes, Skills
+09-15-19, 531, python
+09-16-19, 334, git, ssh, scp, html, css
+09-17-19, 120, git, ssh, scp, html, css
+09-18-19, 96, git, python, tkinter 
+09-19-19, 115, git, python
+09-20-19, 285, git, python, matplotlib
+09-21-19, 140, git, python, pyplot.canvas
+09-22-19, 270, python
+09-23-19, 126, python, pygame
+09-24-19, 187, python, namedtuples
+09-25-19, 260, python, git
+09-26-19, 233, python, git, re
+09-27-19, 184, python, git, re, AWS, php
+09-28-19, 80, re, python
+09-29-19, 392, unicode, re, python, AWS, git, php 
+09-30-19, 195, python, exceptions
+10-01-19, 148, php, flask, git
+10-02-19, 387, sad
+10-03-19, 270, lambda
+10-04-19, 36, lambda 
+10-05-19, 255, listcomprehensions, functional prog, flask
