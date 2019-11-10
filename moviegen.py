@@ -13,6 +13,21 @@
     Expect to do some string parsing and type conversions here. We hope you like it, enjoy!
     
 APIs glob json movie data
+from omdb import (get_movie_data, get_single_comedy,
+                  get_movie_most_nominations, get_movie_longest_runtime)
+
+movies = get_movie_data()
+
+
+def test_movie_data_structure():
+    assert len(movies) == 5
+    assert all(type(m) == dict for m in movies)
+
+
+def test_data_analysis():
+    assert get_single_comedy(movies) == 'Horrible Bosses'
+    assert get_movie_most_nominations(movies) == 'Fight Club'
+    assert get_movie_longest_runtime(movies) == 'Blade Runner 2049'
 """
 
 import glob
@@ -46,34 +61,36 @@ def get_movie_data(files=files):
     return movielist
 
 def get_single_comedy(movies):
-    return [moviedict['Title'] for moviedict in iter(get_movie_data(movies)) if 'Comedy' in moviedict['Genre']][0]
+    movie = [ moviedict['Title'] for moviedict in movies if 'Comedy' in moviedict['Genre']]
+    return movie[0]
 
 
 def get_movie_most_nominations(movies):
-    number_of_nominations = []
     result = []
-    moviesgen = [ (m['Title'], m['Awards']) for m in iter(get_movie_data(movies)) ]
-    for movie in moviesgen:
+    movieslist = [ (m['Title'], m['Awards']) for m in movies ]
+    for movie in movieslist:
+        number = 0
         if ' nominations' in movie[1]:
-            number = int(movie[1].rstrip(' nominations.').lstrip()[-2:])
-            number_of_nominations.append(number)
+            numberstr = movie[1].rstrip(' nominations.').lstrip()[-2:]
+            number += int(numberstr)
         if 'Nominated ' in movie[1]:
-            number = int(movie[1].lstrip('Nominated for ')[0:2].rstrip())
-            number_of_nominations.append(number)
+            numberstr = movie[1].lstrip('Nominated for ')[0:2].rstrip()
+            number += int(numberstr)
         else:
-            number_of_nominations.append(0)
-        result.append( (movie[0], sum(number_of_nominations)) )
+            number += 0
+        result.append( (movie[0], number) )
     return [ (t,n) for t,n in sorted(result, key=itemgetter(1)) ][-1][0] 
 
 
 def get_movie_longest_runtime(movies):
-    moviegen = iter(get_movie_data(movies))
-    movies = [ (m['Title'], m['Runtime']) for m in moviegen ]
-    return [ (t,r) for t,r in sorted(movies, key=itemgetter(1)) ][-1][0]
+    movieslist = [ (m['Title'], m['Runtime']) for m in movies ]
+    movies_stripped = [ (m[0], m[1].rstrip(' min')) for m in movieslist ]
+    movies_w_runtimes = [ (m[0], int(m[1])) for m in movies_stripped]
+    return [ (t,r) for t,r in sorted(movies_w_runtimes, key=itemgetter(1)) ][-1][0]
 
-#alist = get_movie_data()
-#print(alist[0])
-print(get_single_comedy(files))
-print(get_movie_most_nominations(files))
-print(get_movie_longest_runtime(files))
+
+alist = get_movie_data()
+print(get_single_comedy(alist))
+print(get_movie_most_nominations(alist))
+print(get_movie_longest_runtime(alist))
 
